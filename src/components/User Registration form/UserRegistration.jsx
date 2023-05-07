@@ -8,15 +8,16 @@ import dropdownContext from "../../context/DropdownContext/DropdownContext";
 import formContext from "../../context/FormContext/FormContext";
 import { validateSchema } from "../../schemas/index";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const UserRegistration = () => {
   const { getCountry, country, getState, selectedState, getCity, city } =
     useContext(dropdownContext);
-  const { register, handleSubmit,formState:{errors} } = useForm();
+  const { register, handleSubmit,formState:{errors} } = useForm({resolver:yupResolver(validateSchema)});
 
   const { addUser } = useContext(formContext);
-  const [selectCountry, setSelectCountry] = useState();
-  const [selectState, setSelectState] = useState();
+  const [selectCountry, setSelectCountry] = useState("");
+  const [selectState, setSelectState] = useState("");
 
 
   useEffect(() => {
@@ -60,11 +61,9 @@ const UserRegistration = () => {
       data.bloodgroup,
       data.nationality
     );
-    //validation using yup
-    const isValid = validateSchema.isValid(data);
-    console.log(isValid);
+    
     console.log(data);
-    console.log(formState.errors.mobile);
+    
   };
 
   // const handleInputChange = (e) => {
@@ -99,6 +98,9 @@ const UserRegistration = () => {
               // onChange={handleInputChange}
               placeholder="Enter Your Name"
             />
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.name?.message}
+            </p>
 
             <Form.Label
               htmlFor="contactNumber"
@@ -116,8 +118,9 @@ const UserRegistration = () => {
               // onChange={handleInputChange}
               placeholder="Enter Your Contact Number"
             />
-            {/* {errors.mobile?.maxLength != 10 && */}
-              {/* "Mobile number should be of 10 digits"} */}
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.mobile?.message}
+            </p>
           </Col>
 
           <Col xs={6} md={4}>
@@ -137,6 +140,9 @@ const UserRegistration = () => {
               // value={formData.dob}
               // onChange={handleInputChange}
             />
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.dob?.message}
+            </p>
 
             <Form.Label
               htmlFor="idType"
@@ -182,6 +188,9 @@ const UserRegistration = () => {
               <option value="Female">Female</option>
               <option value="Female">other</option>
             </Form.Select>
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.sex?.message}
+            </p>
             <Form.Label
               htmlFor="IDproof"
               style={{ fontWeight: "400", fontSize: "17px", marginTop: "15px" }}
@@ -198,6 +207,9 @@ const UserRegistration = () => {
               // value={formData.govID}
               // onChange={handleInputChange}
             />
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.govID?.message}
+            </p>
           </Col>
         </Row>
 
@@ -244,7 +256,7 @@ const UserRegistration = () => {
 
           <Col xs={6} md={3}>
             <Form.Label
-              htmlFor="gemail"
+              htmlFor="email"
               style={{ fontWeight: "400", fontSize: "17px", marginTop: "5px" }}
             >
               Gardian Email
@@ -252,13 +264,16 @@ const UserRegistration = () => {
             <Form.Control
               placeholder="Enter the gaurdian email"
               type="email"
-              id="gemail"
+              id="email"
               size="sm"
               name="email"
               {...register("email")}
               // value={formData.email}
               // onChange={handleInputChange}
             />
+            <p style={{ fontSize: "15px", margin: "0", color: "red" }}>
+              {errors.email?.message}
+            </p>
           </Col>
           <Col xs={6} md={3}>
             <Form.Label

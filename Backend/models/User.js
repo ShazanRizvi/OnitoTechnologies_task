@@ -5,9 +5,10 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique:true,
   },
   dob: {
-    type: Date,
+    type: String,
     required: true,
     unique: true,
   },
@@ -29,8 +30,6 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    
-    unique: true,
   },
   emergencycontact: {
     type: String,
